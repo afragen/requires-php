@@ -25,7 +25,7 @@ class WP_Plugin_Requires_PHP {
 
 			$url      = 'https://api.wordpress.org/plugins/info/1.1/';
 			$url      = add_query_arg( array(
-				'action'        => 'plugin' . '_information',
+				'action'        => 'plugin_information',
 				'request[slug]' => $update->slug,
 			), $url );
 			$response = wp_remote_get( $url );
