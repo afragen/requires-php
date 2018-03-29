@@ -12,8 +12,14 @@
  * Requires PHP:      5.6
  */
 
+namespace Fragen;
 
-class WP_Plugin_Requires_PHP {
+/**
+ * Class Requires_PHP
+ *
+ * @package Fragen
+ */
+class Requires_PHP {
 
 	public function __construct() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'pre_set_site_transient_update_plugins', ) );
@@ -43,4 +49,4 @@ class WP_Plugin_Requires_PHP {
 	}
 }
 
-new WP_Plugin_Requires_PHP();
+new Requires_PHP();
