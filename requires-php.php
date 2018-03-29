@@ -26,18 +26,7 @@ class Requires_PHP {
 	}
 
 	public function pre_set_site_transient_update_plugins( $transient ) {
-
 		foreach ( (array) $transient->response as $update ) {
-
-			$url      = 'https://api.wordpress.org/plugins/info/1.1/';
-			$url      = add_query_arg( array(
-				'action'        => 'plugin_information',
-				'request[slug]' => $update->slug,
-			), $url );
-			$response = wp_remote_get( $url );
-
-			$response = null !== $response['body'] ? json_decode( $response['body'] ) : false;
-
 			if ( isset( $response->requires_php ) &&
 			     version_compare( $response->requires_php, PHP_VERSION, '>=' )
 			) {
@@ -46,6 +35,26 @@ class Requires_PHP {
 		}
 
 		return $transient;
+	}
+	/**
+	 * Get the dot org API data for the plugin or theme slug.
+	 *
+	 * @param string $slug Plugin or theme slug.
+	 * @param string $type {'plugin'|'theme'}.
+	 *                     Default is 'plugin'.
+	 *
+	 * @return object|bool $response
+	 */
+	protected function get_dot_org_api_data( $slug, $type = 'plugin' ) {
+		$url      = 'https://api.wordpress.org/' . $type . 's/info/1.1/';
+		$url      = add_query_arg( array(
+			'action'        => $type . '_information',
+			'request[slug]' => $slug,
+		), $url );
+		$response = wp_remote_get( $url );
+		$response = null !== $response['body'] ? json_decode( $response['body'] ) : false;
+
+		return $response;
 	}
 }
 
