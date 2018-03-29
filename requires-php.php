@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       This plugin is used for testing.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -21,10 +21,20 @@ namespace Fragen;
  */
 class Requires_PHP {
 
+	/**
+	 * Requires_PHP constructor.
+	 */
 	public function __construct() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'pre_set_site_transient_update_plugins', ) );
 	}
 
+	/**
+	 * Unset update transient as appropriate.
+	 *
+	 * @param object $transient Update transient.
+	 *
+	 * @return object $transient Update transient.
+	 */
 	public function pre_set_site_transient_update_plugins( $transient ) {
 		foreach ( (array) $transient->response as $update ) {
 			if ( ! $this->is_required_php( $update ) ) {
