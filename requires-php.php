@@ -27,15 +27,27 @@ class Requires_PHP {
 
 	public function pre_set_site_transient_update_plugins( $transient ) {
 		foreach ( (array) $transient->response as $update ) {
-			if ( isset( $response->requires_php ) &&
-			     version_compare( $response->requires_php, PHP_VERSION, '>=' )
-			) {
+			if ( ! $this->is_required_php( $update ) ) {
 				unset( $transient->response[ $update->plugin ] );
 			}
 		}
 
 		return $transient;
 	}
+
+	/**
+	 * Test for required PHP version.
+	 *
+	 * @param \stdClass $repo Repository being tested from update transient.
+	 *
+	 * @return bool
+	 */
+	protected function is_required_php( $repo ) {
+		$response = $this->get_dot_org_api_data( $repo->slug );
+
+		return ( ! $response->requires_php || version_compare( PHP_VERSION, $response->requires_php, '>=' ) );
+	}
+
 	/**
 	 * Get the dot org API data for the plugin or theme slug.
 	 *
