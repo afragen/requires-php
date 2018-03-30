@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       This plugin is used for testing.
- * Version:           0.2.0
+ * Version:           0.3.0
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -55,7 +55,7 @@ class Requires_PHP {
 	protected function is_required_php( $repo ) {
 		$response = $this->get_dot_org_api_data( $repo->slug );
 
-		return ( ! $response->requires_php || version_compare( PHP_VERSION, $response->requires_php, '>=' ) );
+		return ( isset( $response->requires_php ) && version_compare( PHP_VERSION, $response->requires_php, '>=' ) );
 	}
 
 	/**
