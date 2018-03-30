@@ -62,15 +62,13 @@ class Requires_PHP {
 	 * Get the dot org API data for the plugin or theme slug.
 	 *
 	 * @param string $slug Plugin or theme slug.
-	 * @param string $type {'plugin'|'theme'}.
-	 *                     Default is 'plugin'.
 	 *
 	 * @return object|bool $response
 	 */
-	protected function get_dot_org_api_data( $slug, $type = 'plugin' ) {
-		$url      = 'https://api.wordpress.org/' . $type . 's/info/1.1/';
+	protected function get_dot_org_api_data( $slug ) {
+		$url      = 'https://api.wordpress.org/plugins/info/1.1/';
 		$url      = add_query_arg( array(
-			'action'        => $type . '_information',
+			'action'        => 'plugin_information',
 			'request[slug]' => $slug,
 		), $url );
 		$response = wp_remote_get( $url );
