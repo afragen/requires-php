@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       This plugin is used for testing.
- * Version:           0.3.0
+ * Version:           0.4.0
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -26,6 +26,7 @@ class Requires_PHP {
 	 */
 	public function __construct() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'pre_set_site_transient_update_plugins', ) );
+		add_filter( 'upgrader_pre_download', array( $this, 'upgrader_pre_download' ) );
 	}
 
 	/**
@@ -43,6 +44,20 @@ class Requires_PHP {
 		}
 
 		return $transient;
+	}
+
+	/**
+	 * Interrupt 'Add Plugin' cycle.
+	 *
+	 * @return \WP_Error|bool
+	 */
+	public function upgrader_pre_download() {
+		$repo = (object) $_POST;
+		if ( ! $this->is_required_php( $repo ) ) {
+			return new \WP_Error( 'requires_php', __( 'Upgrade PHP version to install this plugin.' ) );
+		}
+
+		return false;
 	}
 
 	/**
