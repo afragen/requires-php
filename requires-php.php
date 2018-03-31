@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       This plugin is used for testing.
- * Version:           0.4.4
+ * Version:           0.4.5
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
