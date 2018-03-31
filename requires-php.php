@@ -80,7 +80,7 @@ class Requires_PHP {
 	 * @return object|bool $response
 	 */
 	protected function get_plugin_dot_org_api_data( $slug ) {
-		$url      = 'https://api.wordpress.org/plugins/info/1.1/';
+		$url      = 'https://api.wordpress.org/plugins/info/1.2/';
 		$url      = add_query_arg( array(
 			'action'        => 'plugin_information',
 			'request[slug]' => $slug,
