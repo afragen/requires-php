@@ -1,4 +1,5 @@
 #### [unreleased]
+* fixed PHP notices
 
 Proof of concept for WordPress.org `readme.txt` `Requires PHP` tag.
 
