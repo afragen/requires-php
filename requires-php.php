@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       This plugin is used for testing.
- * Version:           0.4.1
+ * Version:           0.4.2
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -38,7 +38,7 @@ class Requires_PHP {
 	 */
 	public function unset_update_plugins_transient( $transient ) {
 		foreach ( (array) $transient->response as $update ) {
-			if ( ! $this->is_required_php( $update ) ) {
+			if ( ! $this->is_required_php( $update->slug ) ) {
 				unset( $transient->response[ $update->plugin ] );
 			}
 		}
@@ -52,8 +52,7 @@ class Requires_PHP {
 	 * @return \WP_Error|bool
 	 */
 	public function exit_add_plugin_process() {
-		$repo = (object) $_POST;
-		if ( ! $this->is_required_php( $repo ) ) {
+		if ( ! $this->is_required_php( $_POST['slug'] ) ) {
 			return new \WP_Error( 'requires_php', __( 'Upgrade PHP to install this plugin.' ) );
 		}
 
@@ -63,12 +62,12 @@ class Requires_PHP {
 	/**
 	 * Test for required PHP version.
 	 *
-	 * @param \stdClass $repo Repository being tested from update transient.
+	 * @param string $slug Slug of the repository being tested.
 	 *
 	 * @return bool
 	 */
-	protected function is_required_php( $repo ) {
-		$response = $this->get_plugin_dot_org_api_data( $repo->slug );
+	protected function is_required_php( $slug ) {
+		$response = $this->get_plugin_dot_org_api_data( $slug );
 
 		return ( isset( $response->requires_php ) && version_compare( PHP_VERSION, $response->requires_php, '>=' ) );
 	}
