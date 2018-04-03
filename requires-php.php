@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       This plugin is used for testing.
- * Version:           0.4.6
+ * Version:           0.5.0
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -26,6 +26,7 @@ class Requires_PHP {
 	 */
 	public function __construct() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'unset_update_plugins_transient', ) );
+		add_filter( 'plugin_row_meta', array( $this, 'plugin_update_nag' ), 10, 2 );
 		add_filter( 'upgrader_pre_download', array( $this, 'exit_add_plugin_process' ) );
 	}
 
@@ -46,6 +47,23 @@ class Requires_PHP {
 		}
 
 		return $transient;
+	}
+
+	/**
+	 * Adds small PHP upgrade nag to plugin row.
+	 *
+	 * @param array  $links
+	 * @param string $file
+	 *
+	 * @return array $links
+	 */
+	public function plugin_update_nag( $links, $file ) {
+		$slug = dirname( $file );
+		if ( ! $this->is_required_php( $slug ) ) {
+			$links[] = '<span style="color:#f00;">' . __( 'Upgrade PHP for available plugin update.' ) . '</span>';
+		}
+
+		return $links;
 	}
 
 	/**
