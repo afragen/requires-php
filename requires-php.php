@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
- * Description:       This plugin is used for testing.
- * Version:           0.5.0
+ * Description:       Perform PHP checks against dot org plugins.
+ * Version:           0.6.0
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -101,15 +101,55 @@ class Requires_PHP {
 	 * @return object|bool $response
 	 */
 	protected function get_plugin_dot_org_api_data( $slug ) {
-		$url      = 'https://api.wordpress.org/plugins/info/1.2/';
-		$url      = add_query_arg( array(
-			'action'        => 'plugin_information',
-			'request[slug]' => $slug,
-		), $url );
-		$response = wp_remote_get( $url );
-		$response = null !== $response['body'] ? json_decode( $response['body'] ) : false;
+		$response = $this->get_cache( $slug );
+		if ( ! $response ) {
+			$url      = 'https://api.wordpress.org/plugins/info/1.2/';
+			$url      = add_query_arg( array(
+				'action'        => 'plugin_information',
+				'request[slug]' => $slug,
+			), $url );
+			$response = wp_remote_get( $url );
+			$response = null !== $response['body'] ? json_decode( $response['body'] ) : false;
+			$this->set_cache( $slug, $response );
+		}
 
 		return $response;
+	}
+
+	/**
+	 * Set dot org API query to option.
+	 *
+	 * @param string    $slug
+	 * @param \stdClass $response
+	 *
+	 * @return bool
+	 */
+	protected function set_cache( $slug, $response ) {
+		$cache_key = 'php_check-' . md5( $slug );
+		$timeout   = '+' . 12 . ' hours';
+
+		$response->timeout = strtotime( $timeout );
+		update_site_option( $cache_key, $response );
+
+		return true;
+	}
+
+	/**
+	 * Get cached dot org API query from set option.
+	 *
+	 * @param string $slug
+	 *
+	 * @return bool|mixed
+	 */
+	protected function get_cache( $slug ) {
+		$cache_key = 'php_check-' . md5( $slug );
+		$cache     = get_site_option( $cache_key );
+
+		if ( empty( $cache->timeout ) || time() > $cache->timeout ) {
+			return false;
+		}
+
+		return $cache;
 	}
 }
 

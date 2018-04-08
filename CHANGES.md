@@ -1,3 +1,6 @@
+#### 0.6.0
+* added caching to store dot org API queries for 12 hours
+
 #### 0.5.0
 * fixed PHP notices
 * added PHP upgrade nag to plugin row meta
