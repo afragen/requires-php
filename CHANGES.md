@@ -1,5 +1,6 @@
 #### 0.6.0
 * added caching to store dot org API queries for 12 hours
+* added `uninstall.php` to delete cache on uninstall
 
 #### 0.5.0
 * fixed PHP notices
