@@ -9,7 +9,7 @@
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/afragen/requires-php/
  * Requires WP:       4.9
- * Requires PHP:      5.6
+ * Requires PHP:      5.3
  */
 
 namespace Fragen;
