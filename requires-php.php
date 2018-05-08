@@ -28,6 +28,7 @@ class Requires_PHP {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'unset_update_plugins_transient', ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_update_nag' ), 10, 2 );
 		add_filter( 'upgrader_pre_download', array( $this, 'exit_add_plugin_process' ) );
+		add_filter( 'plugin_install_action_links', array( $this, 'disable_install_button' ), 10, 2 );
 	}
 
 	/**
@@ -64,6 +65,31 @@ class Requires_PHP {
 		}
 
 		return $links;
+	}
+
+	/**
+	 * Filter plugin action links in Install Plugin page.
+	 *
+	 * @param array $action_links
+	 * @param array $plugin
+	 *
+	 * @return array $action_links
+	 */
+	public function disable_install_button( $action_links, $plugin ) {
+		$disable_button = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Unable to Install' ) . '</button>';
+
+		if ( ! $plugin['requires_php'] ) {
+			return $action_links;
+		}
+
+		if ( version_compare( PHP_VERSION, $plugin['requires_php'], '<=' ) ) {
+			unset( $action_links[0] );
+			$action_links[] = __( 'Upgrade PHP to install this plugin.' );
+			$action_links[] = $disable_button;
+			$action_links   = array_reverse( $action_links );
+		}
+
+		return $action_links;
 	}
 
 	/**
