@@ -1,3 +1,7 @@
+#### 0.7.0
+* added filter in only place on Install Plugin page I could find to add something to the plugin card
+* disable hook that interrupts install process
+
 #### 0.6.0
 * added caching to store dot org API queries for 12 hours
 * added `uninstall.php` to delete cache on uninstall

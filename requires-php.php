@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       Perform PHP checks against dot org plugins.
- * Version:           0.6.0
+ * Version:           0.7.0
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -27,8 +27,8 @@ class Requires_PHP {
 	public function __construct() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'unset_update_plugins_transient', ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_update_nag' ), 10, 2 );
-		add_filter( 'upgrader_pre_download', array( $this, 'exit_add_plugin_process' ) );
 		add_filter( 'plugin_install_action_links', array( $this, 'disable_install_button' ), 10, 2 );
+		//add_filter( 'upgrader_pre_download', array( $this, 'exit_add_plugin_process' ) );
 	}
 
 	/**
