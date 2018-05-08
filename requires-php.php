@@ -40,7 +40,7 @@ class Requires_PHP {
 	public function unset_update_plugins_transient( $transient ) {
 		if ( isset( $transient->response ) ) {
 			foreach ( (array) $transient->response as $update ) {
-				if ( ! $this->is_required_php( $update->slug ) ) {
+				if ( $this->is_required_php( $update->slug ) ) {
 					unset( $transient->response[ $update->plugin ] );
 				}
 			}
@@ -59,7 +59,7 @@ class Requires_PHP {
 	 */
 	public function plugin_update_nag( $links, $file ) {
 		$slug = dirname( $file );
-		if ( ! $this->is_required_php( $slug ) ) {
+		if ( $this->is_required_php( $slug ) ) {
 			$links[] = '<span style="color:#f00;">' . __( 'Upgrade PHP for available plugin update.' ) . '</span>';
 		}
 
