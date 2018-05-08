@@ -25,7 +25,7 @@ class Requires_PHP {
 	 * Requires_PHP constructor.
 	 */
 	public function __construct() {
-		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'unset_update_plugins_transient', ) );
+		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'unset_update_plugins_transient' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_update_nag' ), 10, 2 );
 		add_filter( 'plugin_install_action_links', array( $this, 'disable_install_button' ), 10, 2 );
 	}
