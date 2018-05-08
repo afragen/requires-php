@@ -96,13 +96,17 @@ class Requires_PHP {
 	 *
 	 * @param string $slug Slug of the repository being tested.
 	 *
-	 * @return bool
+	 * @return bool True for below required PHP version.
+	 *              False for above required PHP version or none set.
 	 */
 	protected function is_required_php( $slug ) {
 		$response = $this->get_plugin_dot_org_api_data( $slug );
 
-		return isset( $response->error ) ||
-		       ( isset( $response->requires_php ) && version_compare( PHP_VERSION, $response->requires_php, '>=' ) );
+		if ( ! $response->requires_php ) {
+			return false;
+		}
+
+		return version_compare( PHP_VERSION, $response->requires_php, '<=' );
 	}
 
 	/**
@@ -122,6 +126,11 @@ class Requires_PHP {
 			), $url );
 			$response = wp_remote_get( $url );
 			$response = null !== $response['body'] ? json_decode( $response['body'] ) : false;
+
+			// Plugins not in dot org.
+			if ( ! isset( $response->requires_php ) ) {
+				$response->requires_php = false;
+			}
 			$this->set_cache( $slug, $response );
 		}
 
