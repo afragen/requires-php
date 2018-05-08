@@ -1,3 +1,6 @@
+#### 0.7.1
+* update for text from ticket [#43986](https://core.trac.wordpress.org/ticket/43986)
+
 #### 0.7.0
 * added filter in only place on Install Plugin page I could find to add something to the plugin card
 * disable hook that interrupts install process

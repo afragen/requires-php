@@ -3,7 +3,7 @@
  * Plugin Name:       Requires PHP
  * Plugin URI:        https://github.com/afragen/requires-php/
  * Description:       Perform PHP checks against dot org plugins.
- * Version:           0.7.0
+ * Version:           0.7.1
  * Author:            Andy Fragen
  * License:           MIT
  * License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -76,15 +76,15 @@ class Requires_PHP {
 	 * @return array $action_links
 	 */
 	public function disable_install_button( $action_links, $plugin ) {
-		$disable_button = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Unable to Install' ) . '</button>';
+		$disable_button = '<button type="button" class="button button-disabled" disabled="disabled">';
+		$disable_button .= __( 'Cannot install' );
+		$disable_button .= '</button>';
 
-		if ( ! $plugin['requires_php'] ) {
-			return $action_links;
-		}
-
-		if ( version_compare( PHP_VERSION, $plugin['requires_php'], '<=' ) ) {
+		if ( $plugin['requires_php'] &&
+		     version_compare( PHP_VERSION, $plugin['requires_php'], '<=' )
+		) {
 			unset( $action_links[0] );
-			$action_links[] = __( 'Upgrade PHP to install this plugin.' );
+			$action_links[] = __( 'PHP version too low' );
 			$action_links[] = $disable_button;
 			$action_links   = array_reverse( $action_links );
 		}
@@ -152,7 +152,7 @@ class Requires_PHP {
 	 */
 	protected function set_cache( $slug, $response ) {
 		$cache_key = 'php_check-' . md5( $slug );
-		$timeout   = '+' . 12 . ' hours';
+		$timeout   = '+12 hours';
 
 		$response->timeout = strtotime( $timeout );
 		update_site_option( $cache_key, $response );
