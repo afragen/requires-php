@@ -28,7 +28,6 @@ class Requires_PHP {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'unset_update_plugins_transient', ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_update_nag' ), 10, 2 );
 		add_filter( 'plugin_install_action_links', array( $this, 'disable_install_button' ), 10, 2 );
-		//add_filter( 'upgrader_pre_download', array( $this, 'exit_add_plugin_process' ) );
 	}
 
 	/**
@@ -90,19 +89,6 @@ class Requires_PHP {
 		}
 
 		return $action_links;
-	}
-
-	/**
-	 * Interrupt 'Add Plugin' cycle.
-	 *
-	 * @return \WP_Error|bool
-	 */
-	public function exit_add_plugin_process() {
-		if ( isset( $_POST['slug'] ) && ! $this->is_required_php( $_POST['slug'] ) ) {
-			return new \WP_Error( 'requires_php', __( 'Upgrade PHP to install this plugin.' ) );
-		}
-
-		return false;
 	}
 
 	/**
