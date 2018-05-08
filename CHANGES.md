@@ -1,4 +1,4 @@
-#### 0.7.1
+#### 0.8.0
 * update for text from ticket [#43986](https://core.trac.wordpress.org/ticket/43986)
 * remove hook interrupting install process
 * refactor `is_required_php()`
