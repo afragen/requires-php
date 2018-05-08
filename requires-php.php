@@ -178,7 +178,7 @@ class Requires_PHP {
 	 * Add admin notice.
 	 */
 	private function show_admin_notice() {
-		add_action( is_multisite() ? 'network_' : null . 'admin_notices', array( $this, 'get_admin_notice' ) );
+		add_action( is_multisite() ? 'network_admin_notices' : 'admin_notices', array( $this, 'get_admin_notice' ) );
 	}
 
 	/**
