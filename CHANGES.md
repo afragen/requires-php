@@ -1,3 +1,6 @@
+#### 0.9.0
+* add admin notice in `update-core.php`
+
 #### 0.8.0
 * update for text from ticket [#43986](https://core.trac.wordpress.org/ticket/43986)
 * remove hook interrupting install process
