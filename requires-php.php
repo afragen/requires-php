@@ -51,6 +51,17 @@ class Requires_PHP {
 	}
 
 	/**
+					$this->requires_php_update_notice();
+	/**
+	 * Create requires PHP update notice.
+	 */
+	public function requires_php_update_notice() {
+		$message = '<span style="color:#f00;" class="dashicons dashicons-warning"></span>&nbsp;';
+		$message .= __( 'Some updates are not shown in this list because they require a newer version of PHP.' );
+		print( '<div class="notice-error notice"><p>' . $message . '</p></div>' );
+	}
+
+	/**
 	 * Adds small PHP upgrade nag to plugin row.
 	 *
 	 * @param array  $links
