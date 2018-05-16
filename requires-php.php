@@ -62,9 +62,23 @@ class Requires_PHP {
 		$slug = dirname( $file );
 		if ( $this->is_required_php( $slug ) ) {
 			$links[] = '<span style="color:#f00;">' . __( 'Upgrade PHP for available plugin update.' ) . '</span>';
+			add_action( "after_plugin_row_{$file}", array( $this, 'remove_plugin_update_row' ), 10, 2 );
 		}
 
 		return $links;
+	}
+
+	/**
+	 * Write out inline style to hide the update row notice.
+	 *
+	 * @param string $plugin_file Unused.
+	 * @param array  $plugin_data Plugin data.
+	 */
+	public function remove_plugin_update_row( $plugin_file, $plugin_data ) {
+		print( '<script>' );
+		print( 'jQuery(".update[data-plugin=\'' . $plugin_file . '\']").removeClass("update");' );
+		print( 'jQuery("tr#' . $plugin_data['slug'] . '-update").remove();' );
+		print( '</script>' );
 	}
 
 	/**
