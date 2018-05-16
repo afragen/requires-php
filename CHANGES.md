@@ -1,3 +1,5 @@
+#### 0.10.0
+* use transients not wp_options table for cache as that's what would be used in core
 #### 0.9.0
 * add admin notice in `update-core.php`
 

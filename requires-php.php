@@ -118,7 +118,7 @@ class Requires_PHP {
 	 * @return object|bool $response
 	 */
 	protected function get_plugin_dot_org_api_data( $slug ) {
-		$response = $this->get_cache( $slug );
+		$response = get_site_transient( 'php_check-' . $slug );
 		if ( ! $response ) {
 			$url      = 'https://api.wordpress.org/plugins/info/1.2/';
 			$url      = add_query_arg( array(
@@ -132,46 +132,10 @@ class Requires_PHP {
 			if ( ! isset( $response->requires_php ) ) {
 				$response->requires_php = false;
 			}
-			$this->set_cache( $slug, $response );
+			set_site_transient( 'php_check-' . $slug, $response, 12 * HOUR_IN_SECONDS );
 		}
 
 		return $response;
-	}
-
-	/**
-	 * Set dot org API query to option.
-	 *
-	 * @param string    $slug
-	 * @param \stdClass $response
-	 *
-	 * @return bool
-	 */
-	protected function set_cache( $slug, $response ) {
-		$cache_key = 'php_check-' . md5( $slug );
-		$timeout   = '+12 hours';
-
-		$response->timeout = strtotime( $timeout );
-		update_site_option( $cache_key, $response );
-
-		return true;
-	}
-
-	/**
-	 * Get cached dot org API query from set option.
-	 *
-	 * @param string $slug
-	 *
-	 * @return bool|mixed
-	 */
-	protected function get_cache( $slug ) {
-		$cache_key = 'php_check-' . md5( $slug );
-		$cache     = get_site_option( $cache_key );
-
-		if ( empty( $cache->timeout ) || time() > $cache->timeout ) {
-			return false;
-		}
-
-		return $cache;
 	}
 
 	/**
