@@ -42,7 +42,7 @@ class Requires_PHP {
 			foreach ( (array) $transient->response as $update ) {
 				if ( $this->is_required_php( $update->slug ) ) {
 					unset( $transient->response[ $update->plugin ] );
-					$this->show_admin_notice();
+					$this->requires_php_update_notice();
 				}
 			}
 		}
@@ -136,29 +136,6 @@ class Requires_PHP {
 		}
 
 		return $response;
-	}
-
-	/**
-	 * Add admin notice.
-	 */
-	private function show_admin_notice() {
-		add_action( is_multisite() ? 'network_admin_notices' : 'admin_notices', array( $this, 'get_admin_notice' ) );
-	}
-
-	/**
-	 * Create admin notice.
-	 */
-	public function get_admin_notice() {
-		$message = '<span style="color:#f00;" class="dashicons dashicons-warning"></span>&nbsp;';
-		$message .= __( 'Some updates are not shown in this list because they require a higher version of PHP.' );
-
-		?>
-		<div class="notice-error notice is-dismissible">
-			<p>
-				<?php echo $message; ?>
-			</p>
-		</div>
-		<?php
 	}
 
 }
