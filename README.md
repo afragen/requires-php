@@ -6,3 +6,5 @@ Proof of concept for WordPress.org `readme.txt` `Requires PHP` tag.
 - Unsets the `update_plugins` transient if the server version of PHP is less than the version defined in the `Requires PHP` tag.
 - Exits the **Add Plugin** process if the server version of PHP is less than the version defined in the `Requires PHP` tag.
 - If the `Requires PHP` tag is missing from `readme.txt` everything proceeds as usual without the benefit of a check.
+
+Patches in place for [#43986](https://core.trac.wordpress.org/ticket/43986) and [#43987](https://core.trac.wordpress.org/ticket/43987)
