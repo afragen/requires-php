@@ -51,7 +51,25 @@ class Requires_PHP {
 	}
 
 	/**
+	 * Unset update_plugins from update-core.php as appropriate.
+	 *
+	 * @param array $plugins Plugins for updating.
+	 *
+	 * @return array $plugins Plugins for updating.
+	 */
+	public function unset_plugin_updates( $plugins ) {
+		if ( ! empty( $plugins ) ) {
+			foreach ( $plugins as $file => $class ) {
+				if ( $this->is_required_php( $class->update->slug ) ) {
+					unset( $plugins[ $file ] );
 					$this->requires_php_update_notice();
+				}
+			}
+		}
+
+		return $plugins;
+	}
+
 	/**
 	 * Create requires PHP update notice.
 	 */
